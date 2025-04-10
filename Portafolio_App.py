@@ -142,8 +142,6 @@ if tickers:
             )
             benchmark_cum_values = (1 + benchmark_returns).cumprod().values.flatten()
             benchmark_cum_return = pd.Series(benchmark_cum_values, index=benchmark_returns.index)
-            st.markdown("### 📊 Gráfica Histórica del Benchmark (S&P 500)")
-            st.line_chart(benchmark_df["Close"])
 
         benchmark_returns = np.log(benchmark_df["Close"] / benchmark_df["Close"].shift(1)).dropna()
 
