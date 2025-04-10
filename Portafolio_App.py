@@ -223,21 +223,9 @@ if tickers:
                     st.markdown(f"<h3 style='text-align: center;'>📊 Análisis del Portafolio - {nombre}</h3>", unsafe_allow_html=True)
                     
                     # Composición Visual
-                   # Distribución visual y métricas en dos columnas
-col3, col4 = st.columns([1.2, 1.5])
-
-with col3:
-    st.markdown("### 📊 Métricas del Portafolio")
-    st.dataframe(metricas)
-
-with col4:
-    fig_pie = go.Figure(data=[go.Pie(
-        labels=list(port_pesos_dict.keys()),
-        values=[float(w.strip('%')) for w in port_pesos_dict.values()],
-        hole=0.3
-    )])
-    fig_pie.update_layout(title="Distribución Visual del Portafolio", height=400)
-    st.plotly_chart(fig_pie, use_container_width=True, key=f"pie_chart_{i}")
+                    fig_pie = go.Figure(data=[go.Pie(labels=list(port_pesos_dict.keys()), values=[float(w.strip('%')) for w in port_pesos_dict.values()], hole=0.3)])
+                    fig_pie.update_layout(title="Distribución Visual del Portafolio", height=400)
+                    st.plotly_chart(fig_pie, use_container_width=True, key=f"pie_chart_{i}")
                     
                     # Métricas adicionales
                     port_returns_series = pd.Series(log_returns @ port_weights, index=log_returns.index)
