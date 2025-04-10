@@ -336,8 +336,8 @@ Al final, da una recomendación concreta sobre cómo diversificar mejor el porta
                         st.markdown(f"<div style='text-align: justify; font-size: 18px;'>{conclusion_text}</div>", unsafe_allow_html=True)
                     except Exception as e:
                         st.error(f"No se pudo generar la conclusión con IA: {str(e)}")
-                    else:
-                        st.line_chart(port_cum_returns.rename("Portafolio"))
+                    
+                    # Fin de la pestaña: la conclusión es lo último que se muestra
 
         # st.markdown("<h2 style='text-align: center;'>🎯 Portafolio Óptimo Recomendado</h2>", unsafe_allow_html=True)
         # col1, col2, col3 = st.columns([1.2, 1, 1.5])
