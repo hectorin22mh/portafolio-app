@@ -411,6 +411,28 @@ if tickers:
 
         st.dataframe(metricas)
  
+        # Conclusión con IA sobre métricas del portafolio
+        st.subheader("🧠 Conclusión del Análisis del Portafolio")
+ 
+        try:
+            prompt_analisis = f"""
+Eres un asesor financiero profesional. A partir de las siguientes métricas de un portafolio de inversión:
+
+- Beta: {'N/A' if np.isnan(beta) else f"{beta:.2f}"}
+- Alpha: {'N/A' if np.isnan(alpha) else f"{alpha:.2%}"}
+- Tracking Error: {'N/A' if np.isnan(tracking_error) else f"{tracking_error:.2%}"}
+- Correlación Promedio entre activos: {correl_promedio:.2f}
+
+Redacta un párrafo de conclusión en español explicando qué significan estas métricas en conjunto para el inversionista. Evalúa el nivel de riesgo, la diversificación y si se percibe un rendimiento superior al esperado. Usa un lenguaje claro, técnico pero accesible. No uses encabezados ni introducciones.
+"""
+ 
+            model = genai.GenerativeModel('gemini-1.5-flash')
+            genai.configure(api_key=tokenAI)
+            response = model.generate_content(prompt_analisis)
+            analisis_texto = response.text.strip() if hasattr(response, 'text') and response.text else "No se pudo generar el análisis."
+            st.markdown(f"<div style='text-align: justify; font-size: 18px;'>{analisis_texto}</div>", unsafe_allow_html=True)
+        except Exception as e:
+            st.error(f"No se pudo generar la conclusión del análisis con IA: {str(e)}")
 
         st.subheader("📊 Frontera Eficiente (Simulada)")
         fig = go.Figure(data=go.Scatter(
