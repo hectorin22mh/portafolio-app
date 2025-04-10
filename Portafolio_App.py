@@ -314,28 +314,6 @@ if tickers:
                             'S&P 500': benchmark_cum_return
                         }).dropna()
                         st.line_chart(comparison_df)
-                    st.markdown("<h2 style='text-align: center;'>📘 Conclusión del Portafolio</h2>", unsafe_allow_html=True)
-                    try:
-                        pesos_dict = {tickers[i]: f"{w:.2%}" for i, w in enumerate(port_weights)}
-                        genai.configure(api_key=tokenAI)
-                        model = genai.GenerativeModel('gemini-1.5-flash')
-                        prompt_conclusion = f"""
-Eres un asesor financiero experto. A partir de los siguientes datos de un portafolio de inversión:
-
-- Composición del portafolio: {pesos_dict}
-- Rendimiento esperado anual: {port_return:.2%}
-- Volatilidad esperada anual: {port_vol:.2%}
-- Comparativa contra el benchmark: {'supera al benchmark' if port_cum_returns.iloc[-1] > benchmark_cum_return.iloc[-1] else 'no supera al benchmark'}
-
-Redacta una conclusión breve, clara y profesional en español, explicando cómo está compuesto el portafolio, qué se puede esperar de él en términos de riesgo y rendimiento, y si se considera una estrategia diversificada o concentrada. Menciona si supera o no al benchmark y hazlo con un tono cercano pero técnico, como si hablaras con un cliente que no sabe tanto de finanzas.
-
-Al final, da una recomendación concreta sobre cómo diversificar mejor el portafolio en caso de que esté muy concentrado, incluyendo posibles sectores o tipos de acciones que podrían ayudar a reducir el riesgo. No uses encabezados ni introducciones como “Estimado/a”.
-"""
-                        response = model.generate_content(prompt_conclusion)
-                        conclusion_text = response.text.strip() if hasattr(response, 'text') and response.text else "No se pudo generar la conclusión."
-                        st.markdown(f"<div style='text-align: justify; font-size: 18px;'>{conclusion_text}</div>", unsafe_allow_html=True)
-                    except Exception as e:
-                        st.error(f"No se pudo generar la conclusión con IA: {str(e)}")
                     
                     # Fin de la pestaña: la conclusión es lo último que se muestra
 
@@ -387,5 +365,28 @@ Al final, da una recomendación concreta sobre cómo diversificar mejor el porta
             height=600
         )
         st.plotly_chart(fig, use_container_width=True)
+        
+        st.markdown("<h2 style='text-align: center;'>📘 Conclusión del Portafolio</h2>", unsafe_allow_html=True)
+        try:
+            pesos_dict = {tickers[i]: f"{w:.2%}" for i, w in enumerate(optimal_weights)}
+            genai.configure(api_key=tokenAI)
+            model = genai.GenerativeModel('gemini-1.5-flash')
+            prompt_conclusion = f"""
+Eres un asesor financiero experto. A partir de los siguientes datos de un portafolio de inversión:
+
+- Composición del portafolio: {pesos_dict}
+- Rendimiento esperado anual: {optimal_return:.2%}
+- Volatilidad esperada anual: {optimal_volatility:.2%}
+- Comparativa contra el benchmark: {'supera al benchmark' if port_cum_returns.iloc[-1] > benchmark_cum_return.iloc[-1] else 'no supera al benchmark'}
+
+Redacta una conclusión breve, clara y profesional en español, explicando cómo está compuesto el portafolio, qué se puede esperar de él en términos de riesgo y rendimiento, y si se considera una estrategia diversificada o concentrada. Menciona si supera o no al benchmark y hazlo con un tono cercano pero técnico, como si hablaras con un cliente que no sabe tanto de finanzas.
+
+Al final, da una recomendación concreta sobre cómo diversificar mejor el portafolio en caso de que esté muy concentrado, incluyendo posibles sectores o tipos de acciones que podrían ayudar a reducir el riesgo. No uses encabezados ni introducciones como “Estimado/a”.
+"""
+            response = model.generate_content(prompt_conclusion)
+            conclusion_text = response.text.strip() if hasattr(response, 'text') and response.text else "No se pudo generar la conclusión."
+            st.markdown(f"<div style='text-align: justify; font-size: 18px;'>{conclusion_text}</div>", unsafe_allow_html=True)
+        except Exception as e:
+            st.error(f"No se pudo generar la conclusión con IA: {str(e)}")
 
 
