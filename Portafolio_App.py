@@ -433,21 +433,6 @@ Redacta un párrafo de conclusión en español explicando qué significan estas 
             st.markdown(f"<div style='text-align: justify; font-size: 18px;'>{analisis_texto}</div>", unsafe_allow_html=True)
         except Exception as e:
             st.error(f"No se pudo generar la conclusión del análisis con IA: {str(e)}")
- 
-        # Simular precios del portafolio usando retornos reales
-        port_daily_returns = pd.Series(log_returns @ port_weights, index=log_returns.index)
-        port_cum_returns = (1 + port_daily_returns).cumprod()
-
-        st.subheader("📈 Rendimiento Acumulado Comparado")
-
-        if benchmark_cum_return is not None:
-            comparison_df = pd.DataFrame({
-                'Portafolio': port_cum_returns,
-                'S&P 500': benchmark_cum_return
-            }).dropna()
-            st.line_chart(comparison_df)
-        else:
-            st.line_chart(port_cum_returns.rename("Portafolio"))
 
         st.subheader("📊 Frontera Eficiente (Simulada)")
         fig = go.Figure(data=go.Scatter(
