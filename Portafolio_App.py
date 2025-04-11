@@ -190,9 +190,9 @@ if tickers:
         
         # Extraer resultados
         port_keys = {
-            "🔵 Máximo Sharpe Ratio": idx_max_sharpe,
-            "🟢 Mínima Volatilidad": idx_min_vol,
-            "🔴 Máximo Retorno": idx_max_return
+            "➕ Máximo Sharpe Ratio": idx_max_sharpe,
+            "➖ Mínima Volatilidad": idx_min_vol,
+            "🔝 Máximo Retorno": idx_max_return
         }
         
         # Mostrar pestañas con cada portafolio
