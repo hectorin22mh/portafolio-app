@@ -7,7 +7,8 @@ import datetime as dt
 import google.generativeai as genai
 from math import ceil
 
-tokenAI = "AIzaSyDjFAIJkM_2TIlJOTG_rmj7mS6f8IVWG-s"
+import os
+tokenAI = os.getenv("GOOGLE_AI_API_KEY")
 
 def translate_with_gemini(text):
     try:
