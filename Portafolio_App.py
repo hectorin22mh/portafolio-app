@@ -226,9 +226,7 @@ if tickers:
                     # Composición Visual
                     fig_pie = go.Figure(data=[go.Pie(labels=list(port_pesos_dict.keys()), values=[float(w.strip('%')) for w in port_pesos_dict.values()], hole=0.3)])
                     fig_pie.update_layout(title="Distribución Visual del Portafolio", height=400)
-                    st.markdown("<div style='display: flex; justify-content: center;'>", unsafe_allow_html=True)
                     st.plotly_chart(fig_pie, use_container_width=True, key=f"pie_chart_{i}")
-                    st.markdown("</div>", unsafe_allow_html=True)
                     
                     # Métricas adicionales
                     port_returns_series = pd.Series(log_returns @ port_weights, index=log_returns.index)
