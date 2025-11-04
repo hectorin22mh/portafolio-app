@@ -9,6 +9,8 @@ from math import ceil
 
 import os
 tokenAI = os.getenv("GOOGLE_AI_API_KEY")
+if not tokenAI:
+    st.warning("No se encontró la API key de Gemini (GOOGLE_AI_API_KEY). Las funciones de IA estarán desactivadas.")
 
 def translate_with_gemini(text):
     try:
@@ -296,8 +298,8 @@ if tickers:
   
   Redacta un párrafo de conclusión en español explicando qué significan estas métricas en conjunto para el inversionista. Evalúa el nivel de riesgo, la diversificación y si se percibe un rendimiento superior al esperado. Usa un lenguaje claro, técnico pero accesible. No uses encabezados ni introducciones.
   '''
-                        model = genai.GenerativeModel('gemini-1.5-flash')
                         genai.configure(api_key=tokenAI)
+                        model = genai.GenerativeModel('gemini-1.5-flash')
                         response = model.generate_content(prompt_analisis)
                         analisis_texto = response.text.strip() if hasattr(response, 'text') and response.text else "No se pudo generar el análisis."
                         st.markdown(f"<div style='text-align: justify; font-size: 18px;'>{analisis_texto}</div>", unsafe_allow_html=True)
